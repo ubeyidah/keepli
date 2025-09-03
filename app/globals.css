@@ -59,7 +59,7 @@
   --spacing: 0.25rem;
 }
 
-.dark {
+:root{
   --background: oklch(0.2679 0.0036 106.6427);
   --foreground: oklch(0.8074 0.0142 93.0137);
   --card: oklch(0.2679 0.0036 106.6427);

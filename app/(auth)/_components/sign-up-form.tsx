@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  signUpWithEmail,
-  signUpWithGithub,
-  signUpWithGoogle,
-} from "@/actions/auth.actions";
+import { signUpWithEmail, signUpWithGoogle } from "@/actions/auth.actions";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -134,6 +130,7 @@ const SignUpForm = () => {
               alt="google"
               width={18}
               height={18}
+              color="white"
             />{" "}
             Continue With Google
           </Button>

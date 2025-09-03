@@ -21,7 +21,7 @@ const SignIn = async () => {
   await publicRoute();
   return (
     <main className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] h-screen lg:grid-cols-[1fr_2fr]">
-      <div className="flex justify-center items-center px-4">
+      <div className="flex justify-center items-center px-1 md:px-4">
         <div className="flex-1 max-w-xs">
           <SignInForm />
         </div>
