@@ -133,9 +133,9 @@ const SignInForm = () => {
               width={18}
               height={18}
             />{" "}
-            Google
+            Continue With Google
           </Button>
-          <Button
+          {/* <Button
             variant="outline"
             className="flex-1 rounded-xl mt-4"
             onClick={async () => {
@@ -152,7 +152,7 @@ const SignInForm = () => {
               height={18}
             />
             Github
-          </Button>
+          </Button> */}
         </div>
       </form>
     </Form>

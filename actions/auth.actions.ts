@@ -56,7 +56,7 @@ export async function signInWithEmail(email: string, password: string) {
 export async function signOut() {
   const { account } = await createSessionClient();
 
-  (await cookies()).delete("my-custom-session");
+  (await cookies()).delete("keepli-session");
   await account.deleteSession({
     sessionId: "current",
   });
