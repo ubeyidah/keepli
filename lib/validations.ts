@@ -15,4 +15,6 @@ export const authSchema = z
     path: ["confirmPassword"],
   });
 
+export const loginSchema = authSchema.omit({ confirmPassword: true });
+export type LoginSchema = z.infer<typeof loginSchema>;
 export type AuthSchema = z.infer<typeof authSchema>;
