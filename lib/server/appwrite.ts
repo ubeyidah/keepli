@@ -1,6 +1,7 @@
 "use server";
 import { Client, Account } from "node-appwrite";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 export async function createSessionClient() {
   const client = new Client()
@@ -34,11 +35,11 @@ export async function createAdminClient() {
   };
 }
 
-export async function getLoggedInUser() {
+export const getLoggedInUser = cache(async () => {
   try {
     const { account } = await createSessionClient();
     return await account.get();
   } catch (error) {
     return null;
   }
-}
+});

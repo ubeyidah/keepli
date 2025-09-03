@@ -2,7 +2,11 @@
 "use server";
 
 import { ID, OAuthProvider } from "node-appwrite";
-import { createAdminClient, createSessionClient } from "@/lib/server/appwrite";
+import {
+  createAdminClient,
+  createSessionClient,
+  getLoggedInUser,
+} from "@/lib/server/appwrite";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -87,3 +91,19 @@ export async function signUpWithGoogle() {
 
   return redirect(redirectUrl);
 }
+
+export const protectRoute = async () => {
+  const user = await getLoggedInUser();
+  if (!user) {
+    redirect("/sign-in");
+  }
+  return user;
+};
+
+export const publicRoute = async () => {
+  const user = await getLoggedInUser();
+  if (user) {
+    redirect("/dashboard");
+  }
+  return user;
+};

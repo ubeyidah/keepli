@@ -1,6 +1,7 @@
 import React from "react";
 import SignUpForm from "../_components/sign-up-form";
 import { Metadata } from "next";
+import { publicRoute } from "@/actions/auth.actions";
 
 export const metadata: Metadata = {
   title: "Sign Up | Keepli",
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
     "cloud organizer",
   ],
 };
-const SignUp = () => {
+const SignUp = async () => {
+  await publicRoute();
   return (
     <main className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] h-screen lg:grid-cols-[1fr_2fr]">
       <div className="flex justify-center items-center px-4">
