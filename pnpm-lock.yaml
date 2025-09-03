@@ -32,6 +32,9 @@ importers:
       next:
         specifier: 15.5.2
         version: 15.5.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      node-appwrite:
+        specifier: ^18.0.0
+        version: 18.0.0
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -648,6 +651,12 @@ packages:
       sass:
         optional: true
 
+  node-appwrite@18.0.0:
+    resolution: {integrity: sha512-2S0T17H2Gm5ZcdInCmHk8Pc8P6mKW8cDCoSBNF3PYGxbKjT51V/HY/2n6IPRqk2HrHPySmx3JIMN+V6QBprqAw==}
+
+  node-fetch-native-with-agent@1.7.2:
+    resolution: {integrity: sha512-5MaOOCuJEvcckoz7/tjdx1M6OusOY6Xc5f459IaruGStWnKzlI1qpNgaAwmn4LmFYcsSlj+jBMk84wmmRxfk5g==}
+
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -1181,6 +1190,12 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+
+  node-appwrite@18.0.0:
+    dependencies:
+      node-fetch-native-with-agent: 1.7.2
+
+  node-fetch-native-with-agent@1.7.2: {}
 
   picocolors@1.1.1: {}
 

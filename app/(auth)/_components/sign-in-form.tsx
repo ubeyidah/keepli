@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  signInWithEmail,
+  signUpWithGithub,
+  signUpWithGoogle,
+} from "@/actions/auth.actions";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,19 +17,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { GithubLogin, GoogleLogin, login } from "@/lib/auth";
 import { LoginSchema, loginSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const SignInForm = () => {
   const [error, setError] = useState(null);
   const [oauthLoading, setOauthLoading] = useState(false);
-  const router = useRouter();
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -36,10 +38,9 @@ const SignInForm = () => {
   const handleSubmit = async (data: LoginSchema) => {
     try {
       setError(null);
-      await login(data.email, data.password);
+      await signInWithEmail(data.email, data.password);
       form.reset();
       setError(null);
-      router.push("/dashboard");
     } catch (error: Error | any) {
       setError(error.message);
       // console.log(error);
@@ -119,9 +120,9 @@ const SignInForm = () => {
           <Button
             variant="outline"
             className="flex-1 rounded-xl mt-4"
-            onClick={() => {
+            onClick={async () => {
               setOauthLoading(true);
-              GoogleLogin();
+              await signUpWithGoogle();
             }}
             type="button"
             disabled={form.formState.isSubmitting || oauthLoading}
@@ -137,9 +138,9 @@ const SignInForm = () => {
           <Button
             variant="outline"
             className="flex-1 rounded-xl mt-4"
-            onClick={() => {
+            onClick={async () => {
               setOauthLoading(true);
-              GithubLogin();
+              await signUpWithGithub();
             }}
             type="button"
             disabled={form.formState.isSubmitting || oauthLoading}
