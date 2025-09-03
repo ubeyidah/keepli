@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,24 +11,40 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
+import { createAccount, GithubLogin, GoogleLogin } from "@/lib/auth";
 import { authSchema, type AuthSchema } from "@/lib/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const SignUpForm = () => {
+  const [error, setError] = useState(null);
+  const [oauthLoading, setOauthLoading] = useState(false);
+  const router = useRouter();
   const form = useForm<AuthSchema>({
     resolver: zodResolver(authSchema),
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
+      name: "",
     },
   });
 
-  const handleSubmit = (data: AuthSchema) => {
-    console.log(data);
+  const handleSubmit = async (data: AuthSchema) => {
+    try {
+      setError(null);
+      await createAccount(data.email, data.password, data.name);
+      form.reset();
+      setError(null);
+      router.push("/dashboard");
+    } catch (error: Error | any) {
+      setError(error.message);
+      // console.log(error);
+    }
   };
   return (
     <Form {...form}>
@@ -37,6 +54,19 @@ const SignUpForm = () => {
           <h2 className="text-3xl font-bold">Keepli</h2>
         </div>
         <p className="text-center mb-7">Create your Keepli account</p>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem className="mb-5">
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Name" type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
@@ -63,39 +93,41 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem className="mb-5">
-              <FormLabel>Confirm Password</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Confirm Password"
-                  type="password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage className="text-destructive" />
-            </FormItem>
-          )}
-        />
-        <Button className="w-full rounded-xl">Sign Up</Button>
+        {error && (
+          <Alert variant="destructive" className="mb-3 text-center">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
-        <p className="text-center mt-4">
+        <Button
+          className="w-full rounded-xl"
+          disabled={form.formState.isSubmitting || oauthLoading}
+        >
+          {form.formState.isSubmitting ? <Spinner /> : " Sign Up "}
+        </Button>
+
+        <p className="text-center mt-4 text-sm">
           Already have an account?{" "}
           <Link href="/sign-in" className="text-primary hover:underline">
             Sign In
           </Link>
         </p>
-        {/* a div for the or separator and signin with google and github */}
         <div className="flex items-center justify-center gap-2 mt-4">
           <div className="w-full h-[1px] bg-gray-400"></div>
           <span className="text-gray-400">or</span>
           <div className="w-full h-[1px] bg-gray-400"></div>
         </div>
         <div className="flex gap-4 mb-10">
-          <Button variant="outline" className="flex-1 rounded-xl mt-4">
+          <Button
+            variant="outline"
+            className="flex-1 rounded-xl mt-4"
+            onClick={() => {
+              setOauthLoading(true);
+              GoogleLogin();
+            }}
+            type="button"
+            disabled={form.formState.isSubmitting || oauthLoading}
+          >
             <Image
               src="/icons/google.svg"
               alt="google"
@@ -104,7 +136,16 @@ const SignUpForm = () => {
             />{" "}
             Google
           </Button>
-          <Button variant="outline" className="flex-1 rounded-xl mt-4">
+          <Button
+            variant="outline"
+            className="flex-1 rounded-xl mt-4"
+            onClick={() => {
+              setOauthLoading(true);
+              GithubLogin();
+            }}
+            type="button"
+            disabled={form.formState.isSubmitting || oauthLoading}
+          >
             <Image
               src="/icons/github.svg"
               alt="github"
