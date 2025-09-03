@@ -135,9 +135,9 @@ const SignUpForm = () => {
               width={18}
               height={18}
             />{" "}
-            Google
+            Continue With Google
           </Button>
-          <Button
+          {/* <Button
             variant="outline"
             className="flex-1 rounded-xl mt-4"
             onClick={async () => {
@@ -154,7 +154,7 @@ const SignUpForm = () => {
               height={18}
             />
             Github
-          </Button>
+          </Button> */}
         </div>
         <p className="text-center text-xs mt-4">
           By signing up, you agree to our{" "}
